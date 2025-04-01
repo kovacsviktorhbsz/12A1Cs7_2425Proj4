@@ -1,0 +1,52 @@
+DROP DATABASE IF EXISTS pizzeria;
+CREATE DATABASE pizzeria
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_hungarian_ci;
+
+USE pizzeria;
+CREATE TABLE Rendeles (
+    razon SERIAL PRIMARY KEY,
+    fazon INT REFERENCES Futar(fazon),
+    vazon INT REFERENCES Vevo(vazon),
+    idopont TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Futar (
+    fazon SERIAL PRIMARY KEY,
+    fnev VARCHAR(100),
+    tel INT
+);
+
+CREATE TABLE Vevo (
+    vazon SERIAL PRIMARY KEY,
+    vnev VARCHAR(100),
+    vcim VARCHAR(250)    
+);
+
+CREATE TABLE Tetel (
+    pazon INT REFERENCES Pizza(pazon),
+    razon INT REFERENCES Rendeles(razon),
+    db INT,    
+    PRIMARY KEY (pazon, razon)
+);
+
+CREATE TABLE Pizza (
+    pazon SERIAL PRIMARY KEY,
+    pnev VARCHAR(100),    
+    par DECIMAL(10,2)    
+);
+
+INSERT INTO Rendeles(razon, fazon, vazon, idopont)
+VALUES (1,1,1,'2025-08-21 20:00:00'),(2,2,2,'2025-08-21 18:00:00');
+
+INSERT INTO Futar(fazon,fnev,tel)
+VALUES (1,'Détár Ferenc',06201234567),(2,'Gáncs Nándor',06204321567);
+
+INSERT INTO Vevo(vazon,vnev,vcim)
+VALUES (1,'Kiss Balázs','9783 Egyházasrádóc Kossuth Lajos utca 2.'),(2,'Nagy Ernő','9782 Nemesrempehollós Ady Endre utca 1.');
+
+INSERT INTO Tetel(razon,pazon,db)
+VALUES (1,1,2),(2,2,1);
+
+INSERT INTO Pizza(pazon,pnev,par)
+VALUES (1,'Fezzo Speciale',3500),(2,'Songoku',2800);
